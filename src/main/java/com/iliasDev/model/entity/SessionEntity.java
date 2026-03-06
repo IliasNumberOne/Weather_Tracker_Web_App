@@ -13,13 +13,19 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "sessions")
-public class Session {
+public class SessionEntity {
     @Id
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
+    @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
+
+    public SessionEntity(Long userId, LocalDateTime localDateTime) {
+        this.id = UUID.randomUUID();
+        this.userId = userId;
+        this.expiresAt = localDateTime;
+    }
 }
