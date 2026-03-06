@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 
-import org.springframework.orm.jpa.hibernate.HibernateTransactionManager;
-import org.springframework.orm.jpa.hibernate.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -36,7 +36,7 @@ public class HibernateConfig {
         Properties props = new Properties();
         props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         props.put("hibernate.show_sql", "true");
-        props.put("hibernate.hbm2ddl.auto", "validate");
+        props.put("hibernate.hbm2ddl.auto", "update");
 
         factory.setHibernateProperties(props);
         return factory;
@@ -46,4 +46,5 @@ public class HibernateConfig {
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
         return new HibernateTransactionManager(sessionFactory);
     }
+
 }

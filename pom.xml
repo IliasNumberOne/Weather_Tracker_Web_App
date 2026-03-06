@@ -10,40 +10,46 @@
     <version>1.0-SNAPSHOT</version>
 
 
+
+
     <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring.version>6.2.10</spring.version>
+        <hibernate.version>6.1.5.Final</hibernate.version>
+        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
     </properties>
 
     <build>
         <finalName>Weather</finalName>
+
     </build>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>7.0.3</version>
-            <scope>compile</scope>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>7.0.3</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>7.0.3</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>7.0.3</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Source: https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
@@ -57,7 +63,7 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.3.0.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
@@ -97,5 +103,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.36</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

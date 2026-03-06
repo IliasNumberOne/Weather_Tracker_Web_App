@@ -79,6 +79,8 @@ public class AuthController {
 
         try{
             User user = authService.authorization(authorizationRequest);
+            sessionService.deleteOldSessions(user.getId());
+
             SessionEntity session = sessionService.createSession(user.getId());
 
             Cookie cookie = new Cookie("SESSION_ID", session.getId().toString());

@@ -41,6 +41,13 @@ public class SessionService {
     }
 
     @Transactional
+    public void deleteOldSessions(Long userId) {
+        sessionRepository.deleteSessionsByUserId(userId);
+    }
+
+
+
+    @Transactional
     public boolean isSessionValid(UUID sessionId) {
         return getValidSession(sessionId).isPresent();
     }

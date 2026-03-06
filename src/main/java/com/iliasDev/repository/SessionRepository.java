@@ -29,4 +29,11 @@ public class SessionRepository {
     public void delete(SessionEntity sessionEntity) {
         sessionFactory.getCurrentSession().remove(sessionEntity);
     }
+
+    public void deleteSessionsByUserId(Long userId) {
+        sessionFactory.getCurrentSession()
+                .createQuery("DELETE FROM SessionEntity s where s.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+    }
 }

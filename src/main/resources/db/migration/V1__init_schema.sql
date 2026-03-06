@@ -1,7 +1,7 @@
 -- USERS
 CREATE TABLE users
 (
-    id       SERIAL PRIMARY KEY,
+    id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
@@ -9,7 +9,7 @@ CREATE TABLE users
 -- LOCATIONS
 CREATE TABLE locations
 (
-    id        SERIAL PRIMARY KEY,
+    id        BIGSERIAL PRIMARY KEY,
     name      VARCHAR(255)  NOT NULL,
     latitude  DECIMAL(9, 6) NOT NULL,
     longitude DECIMAL(9, 6) NOT NULL,
@@ -20,8 +20,8 @@ CREATE TABLE locations
 -- USER_LOCATIONS
 CREATE TABLE user_locations
 (
-    user_id INT NOT NULL,
-    location_id INT NOT NULL,
+    user_id BIGINT NOT NULL,
+    location_id BIGINT NOT NULL,
     PRIMARY KEY (user_id, location_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE
@@ -31,7 +31,7 @@ CREATE TABLE user_locations
 CREATE TABLE sessions
 (
     id         UUID PRIMARY KEY,
-    user_id    INT       NOT NULL,
+    user_id    BIGINT       NOT NULL,
     expires_at TIMESTAMP NOT NULL,
 
     CONSTRAINT fk_sessions_user
