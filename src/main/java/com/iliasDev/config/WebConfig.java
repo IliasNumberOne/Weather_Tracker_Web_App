@@ -1,8 +1,11 @@
 package com.iliasDev.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,7 +17,12 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.iliasDev")
+@PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private Environment env;
+
     // setup Thymeleaf
     @Bean
     public SpringResourceTemplateResolver templateResolver() {

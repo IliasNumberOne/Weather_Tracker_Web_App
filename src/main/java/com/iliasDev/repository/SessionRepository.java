@@ -4,6 +4,7 @@ import com.iliasDev.model.entity.SessionEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +25,13 @@ public class SessionRepository {
         return Optional.ofNullable(
                 sessionFactory.getCurrentSession().get(SessionEntity.class, id)
         );
+    }
+
+    public List<SessionEntity> findByUserId(Long id) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM SessionEntity s WHERE s.userId = :userId", SessionEntity.class)
+                .setParameter("userId", id)
+                .getResultList();
     }
 
     public void delete(SessionEntity sessionEntity) {
