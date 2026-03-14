@@ -6,6 +6,7 @@ import com.iliasDev.model.entity.*;
 import com.iliasDev.repository.SessionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SessionServiceIntegrationTest extends BaseIntegrationTest {
+    @MockitoBean
+    private WeatherService weatherService;
+
     @Autowired
     private SessionService sessionService;
 

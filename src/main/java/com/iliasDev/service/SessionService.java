@@ -1,6 +1,7 @@
 package com.iliasDev.service;
 
 import com.iliasDev.model.entity.SessionEntity;
+import com.iliasDev.model.entity.User;
 import com.iliasDev.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class SessionService {
         SessionEntity sessionEntity = new SessionEntity(userId, LocalDateTime.now().plusHours(1));
         return sessionRepository.save(sessionEntity);
     }
+
 
     @Transactional
     public Optional<SessionEntity> getValidSession(UUID sessionId) {

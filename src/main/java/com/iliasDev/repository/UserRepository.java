@@ -26,4 +26,14 @@ public class UserRepository {
                 .setParameter("login", login)
                 .uniqueResultOptional();
     }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findByIdWithLocations(Long id) {
+        return Optional.ofNullable(
+                sessionFactory.getCurrentSession()
+                        .createQuery("select u from User u left join fetch u.locations where u.id = :id", User.class)
+                        .setParameter("id", id)
+                        .uniqueResult()
+        );
+    }
 }

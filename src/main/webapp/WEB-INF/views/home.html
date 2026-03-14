@@ -29,8 +29,8 @@
         <form th:action="@{/location/search}" method="get">
             <div class="d-flex my-4">
                 <div class="input-group location-search-input-group me-3">
-                    <input class="form-control" t
-                           ype="text"
+                    <input class="form-control"
+                           type="text"
                            name="searchQuery"
                            placeholder="Enter location" required>
                     <button class="btn btn-outline-secondary btn-sm clear-input-button" type="button"
@@ -45,41 +45,45 @@
         </form>
 
         <div>
-            <h2>Locations:</h2>
-
             <div class="row">
+
                 <div class="col-12 col-lg-3 col-md-6 mb-4"
-                    th:each="loc : ${foundLocations}">
-                    <div class="card h-100">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"
-                                th:text="${loc.name()}"></h5>
-                            <p class="card-text mb-1">
-                                Latitude: <span th:text="${loc.lat()}"></span>
-                            </p>
-                            <p class="card-text mb-1">
-                                Longitude: <span th:text="${loc.lon()}"></span>
-                            </p>
-                            <p class="card-text mb-1">
-                                Country: <span th:text="${loc.country()}"></span>
-                            </p>
-                            <p class="card-text mb-3">
-                                State: <span th:text="${loc.state()}"></span>
-                            </p>
-
-                            <div class="mt-auto" th:if="${user}">
-                                <form th:action="@{/location}" method="post">
-                                    <input type="hidden" name="name" th:value="${loc.name}">
-                                    <input type="hidden" name="lat" th:value="${loc.lat}">
-                                    <input type="hidden" name="lon" th:value="${loc.lon}">
-                                    <button class="btn btn-primary w-100" type="submit">Add</button>
-                                </form>
+                     th:each="entry : ${weatherMap}">
+                    <div class="card h-100 position-relative weather-card">
+                        <form class="position-absolute top-0 end-0 m-2"
+                              th:action="@{/home/{locationId}/delete(locationId=${entry.key.id})}"
+                              method="post">
+                            <div class="position-absolute weather-card-delete-form">
+                                <button class="btn-close" aria-label="Delete"></button>
                             </div>
+                        </form>
 
 
+                        <img class="card-img-top img-fluid"
+                             th:src="'https://openweathermap.org/img/wn/' + ${entry.value.weather[0].icon} + '@4x.png'"
+                             alt="Weather icon">
+                        <div class="card-body d-flex flex-column">
+
+                            <h1 class="card-text"
+                                th:text="${entry.value.main.temp}+ '°C'"></h1>
+
+
+                            <h3 class="card-title"
+                                th:text="${entry.key.name}"></h3>
+
+
+                            <p class="card-text mb-1">
+                                Feels like
+                                <span th:text="${entry.value.main.feelsLike}"></span>°C.
+                                <span th:text="${entry.value.weather[0].description}"></span>
+                            </p>
+                            <p class="card-text mb-1">
+                                Humidity: <span th:text="${entry.value.main.feelsLike}"></span>%
+                            </p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
