@@ -1,5 +1,7 @@
 package com.iliasDev.service;
 
+import com.iliasDev.exception.LocationAlreadyAddedException;
+import com.iliasDev.model.dto.LocationDto;
 import com.iliasDev.model.entity.Location;
 import com.iliasDev.model.entity.User;
 import com.iliasDev.repository.LocationRepository;
@@ -9,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.Set;
+import java.math.RoundingMode;
+import java.util.*;
 
 @Service
 public class LocationService {
@@ -29,34 +31,42 @@ public class LocationService {
         return userRepository.findByIdWithLocations(userId);
     }
 
+    @Transactional(readOnly = true)
+    public Map<String, Boolean> getLocationSavedMap(User user, List<LocationDto> locations) {
+        Set<Location> userLocations = locationRepository.findByUser(user);
+        Map<String, Boolean> map = new HashMap<>();
+
+        for (LocationDto locDto : locations) {
+            boolean exists = userLocations.stream()
+                    .anyMatch(l -> l.getLatitude().setScale(2, RoundingMode.HALF_UP).equals(locDto.lat().setScale(2, RoundingMode.HALF_UP))
+                            && l.getLongitude().setScale(2, RoundingMode.HALF_UP).equals(locDto.lon().setScale(2, RoundingMode.HALF_UP)));
+            map.put(locDto.name() + "-" + locDto.country(), exists); // key: name+country
+        }
+
+        return map;
+    }
+
+
     @Transactional
     public void addLocation(Long userId, String name, BigDecimal lat, BigDecimal lon) {
-
         User user = userRepository.findByIdWithLocations(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Optional<Location> existingLocation =
-                locationRepository.findByCoordinates(lat, lon);
-
-        Location location;
-
-        if (existingLocation.isPresent()) {
-            location = existingLocation.get();
-        } else {
-            location = new Location();
-            location.setName(name);
-            location.setLatitude(lat);
-            location.setLongitude(lon);
-
-            locationRepository.save(location);
+        if (locationRepository.existsByUserAndCoordinatesOrName(userId, lat, lon, name)) {
+            throw new LocationAlreadyAddedException("The location " + name + " has already been added");
         }
 
-        boolean alreadyAdded = user.getLocations().stream()
-                .anyMatch(loc -> loc.getLatitude().equals(lat) && loc.getLongitude().equals(lon));
+        Location location = new Location();
+        location.setName(name);
+        location.setLongitude(lon);
+        location.setLatitude(lat);
 
-        if (!alreadyAdded) {
-            user.getLocations().add(location);
-        }
+
+
+        locationRepository.save(location);
+
+
+        user.getLocations().add(location);
     }
 
     @Transactional

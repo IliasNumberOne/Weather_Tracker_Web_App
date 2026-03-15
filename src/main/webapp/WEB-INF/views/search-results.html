@@ -11,11 +11,12 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/home}">
-            <img th:src="@{/images/weather-app.png}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <img th:src="@{/images/weather-app.png}" alt="" width="30" height="24"
+                 class="d-inline-block align-text-top">
             Weather Tracker
         </a>
         <div class="d-flex align-items-center">
-            <span class="navbar-text me-3"  th:text="${user.login}"></span>
+            <span class="navbar-text me-3" th:text="${user.login}"></span>
             <form th:action="@{/auth/sign-out}" method="post">
                 <button type="submit" class="btn btn-outline-danger">Sign out</button>
             </form>
@@ -49,7 +50,7 @@
 
             <div class="row">
                 <div class="col-12 col-lg-3 col-md-6 mb-4"
-                    th:each="loc : ${foundLocations}">
+                     th:each="loc : ${foundLocations}">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"
@@ -67,16 +68,21 @@
                                 State: <span th:text="${loc.state()}"></span>
                             </p>
 
+
                             <div class="mt-auto" th:if="${user}">
-                                <form th:action="@{/location}" method="post">
+                                <form th:action="@{/location}" method="post"
+                                      th:if="${!locationSaved[loc.name() + '-' + loc.country()]}">
                                     <input type="hidden" name="name" th:value="${loc.name}">
                                     <input type="hidden" name="lat" th:value="${loc.lat}">
                                     <input type="hidden" name="lon" th:value="${loc.lon}">
                                     <button class="btn btn-primary w-100" type="submit">Add</button>
                                 </form>
+
+                                <span class="badge bg-success w-100 text-center"
+                                      th:if="${locationSaved[loc.name() + '-' + loc.country()]}">
+                                    Saved
+                                </span>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

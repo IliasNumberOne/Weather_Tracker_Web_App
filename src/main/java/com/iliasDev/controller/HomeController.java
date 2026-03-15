@@ -22,33 +22,24 @@ import java.util.*;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
-    private final SessionService sessionService;
     private final LocationService locationService;
     private final WeatherService weatherService;
-    private final CookieUtil cookieUtil;
 
-    public HomeController(SessionService sessionService, LocationService locationService, WeatherService weatherService, CookieUtil cookieUtil) {
-        this.sessionService = sessionService;
+    public HomeController(LocationService locationService, WeatherService weatherService) {
         this.locationService = locationService;
         this.weatherService = weatherService;
-        this.cookieUtil = cookieUtil;
     }
 
     @GetMapping
     public String getHomePage(Model model, HttpServletRequest request) {
-        UUID sessionID = cookieUtil.getSessionId(request);
-        if (sessionID == null) {
-            return "redirect:/auth/sign-in";
-        }
-        Long userId = sessionService.getValidSession(sessionID)
-                .map(s -> s.getUserId())
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+        Long userId = (Long) request.getAttribute("userId");
 
         User user = locationService.getUserWithLocations(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Set<Location> locations = user.getLocations();
         Map<Location, WeatherDto> locationWeatherDtoMap = new HashMap<>();
+
         locations.forEach(loc -> {
             try {
                 WeatherDto weather = weatherService.getWeather(loc.getLatitude(), loc.getLongitude());
@@ -64,21 +55,12 @@ public class HomeController {
     }
 
     @PostMapping("/{locationId}/delete")
-    public String delete(@PathVariable("locationId") Long locationId,
-                         HttpServletRequest request) {
+    public String deleteLocation(@PathVariable("locationId") Long locationId,
+                                 HttpServletRequest request) {
 
-        UUID sessionId = cookieUtil.getSessionId(request);
-
-        if (sessionId == null) {
-            return "redirect:/auth/sign-in";
-        }
-
-        Long userId = sessionService.getValidSession(sessionId)
-                .map(s -> s.getUserId())
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+        Long userId = (Long) request.getAttribute("userId");
 
         locationService.removeLocationFromUser(userId, locationId);
-
         return "redirect:/home";
     }
 

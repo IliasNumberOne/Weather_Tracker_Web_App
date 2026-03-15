@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,16 +29,25 @@ public class LocationRepository {
         return Optional.ofNullable(sessionFactory.getCurrentSession().get(Location.class, id));
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Location> findByCoordinates(BigDecimal lat, BigDecimal lon) {
-        return sessionFactory.getCurrentSession()
+    public boolean existsByUserAndCoordinatesOrName(Long userId, BigDecimal lat, BigDecimal lon, String name) {
+        BigDecimal normalizedLat = lat.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal normalizedLon = lon.setScale(2, RoundingMode.HALF_UP);
+
+        List<Location> locations = sessionFactory.getCurrentSession()
                 .createQuery(
-                        "from Location l where l.latitude = :lat and l.longitude = :lon",
+                        "select l from Location l join l.users u " +
+                                "where u.id = :userId and (l.latitude between :latMin and :latMax and l.longitude between :lonMin and :lonMax or l.name = :name)",
                         Location.class
                 )
-                .setParameter("lat", lat)
-                .setParameter("lon", lon)
-                .uniqueResultOptional();
+                .setParameter("userId", userId)
+                .setParameter("latMin", normalizedLat.subtract(BigDecimal.valueOf(0.01)))
+                .setParameter("latMax", normalizedLat.add(BigDecimal.valueOf(0.01)))
+                .setParameter("lonMin", normalizedLon.subtract(BigDecimal.valueOf(0.01)))
+                .setParameter("lonMax", normalizedLon.add(BigDecimal.valueOf(0.01)))
+                .setParameter("name", name)
+                .list();
+
+        return !locations.isEmpty();
     }
 
     @Transactional(readOnly = true)

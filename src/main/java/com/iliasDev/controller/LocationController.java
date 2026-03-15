@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -22,56 +22,40 @@ import java.util.UUID;
 @RequestMapping("/location")
 public class LocationController {
     private final LocationService locationService;
-    private final SessionService sessionService;
     private final WeatherService weatherService;
-    private final CookieUtil cookieUtil;
 
 
-    public LocationController(LocationService locationService, SessionService sessionService, WeatherService weatherService, CookieUtil cookieUtil) {
+    public LocationController(LocationService locationService, WeatherService weatherService) {
         this.locationService = locationService;
-        this.sessionService = sessionService;
         this.weatherService = weatherService;
-        this.cookieUtil = cookieUtil;
     }
 
     @GetMapping("/search")
     public String search(@RequestParam("searchQuery") @NotBlank String searchQuery,
                          Model model,
                          HttpServletRequest request) {
-        UUID sessionID = cookieUtil.getSessionId(request);
-        if (sessionID == null) {
-            return "redirect:/auth/sign-in";
-        }
-        Long userId = sessionService.getValidSession(sessionID)
-                .map(s -> s.getUserId())
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+        Long userId = (Long) request.getAttribute("userId");
 
         User user = locationService.getUserWithLocations(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<LocationDto> locations = weatherService.findLocationsByQuery(searchQuery);
+        Map<String, Boolean> locationSaved = locationService.getLocationSavedMap(user, locations);
+
 
         model.addAttribute("user", user);
         model.addAttribute("searchQuery", searchQuery);
         model.addAttribute("foundLocations", locations);
+        model.addAttribute("locationSaved", locationSaved);
 
         return "search-results";
     }
-
 
     @PostMapping
     public String add(@ModelAttribute LocationDto locationDto,
                       HttpServletRequest request) {
 
-        UUID sessionId = cookieUtil.getSessionId(request);
-
-        if (sessionId == null) {
-            return "redirect:/auth/sign-in";
-        }
-
-        Long userId = sessionService.getValidSession(sessionId)
-                .map(s -> s.getUserId())
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+        Long userId = (Long) request.getAttribute("userId");
 
         locationService.addLocation(
                 userId,

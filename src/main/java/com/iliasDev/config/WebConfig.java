@@ -1,6 +1,7 @@
 package com.iliasDev.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iliasDev.controller.SessionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -22,6 +24,23 @@ import java.net.http.HttpClient;
 @ComponentScan("com.iliasDev")
 @PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
+    private final SessionInterceptor sessionInterceptor;
+
+    @Autowired
+    public WebConfig(SessionInterceptor sessionInterceptor) {
+        this.sessionInterceptor = sessionInterceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sessionInterceptor)
+                .excludePathPatterns(
+                        "/auth/**",     // все страницы авторизации
+                        "/css/**",      // статические ресурсы
+                        "/js/**",
+                        "/images/**"
+                );
+    }
 
     @Autowired
     private Environment env;
