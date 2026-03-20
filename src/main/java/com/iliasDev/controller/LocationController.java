@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 @Validated
@@ -57,11 +56,14 @@ public class LocationController {
 
         Long userId = (Long) request.getAttribute("userId");
 
+        String stateSafe = locationDto.state() != null ? locationDto.state() : "";
         locationService.addLocation(
                 userId,
                 locationDto.name(),
                 locationDto.lat(),
-                locationDto.lon()
+                locationDto.lon(),
+                locationDto.country(),
+                stateSafe
         );
 
         return "redirect:/home";

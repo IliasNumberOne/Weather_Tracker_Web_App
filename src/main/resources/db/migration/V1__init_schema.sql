@@ -13,8 +13,10 @@ CREATE TABLE locations
     name      VARCHAR(255)  NOT NULL,
     latitude  DECIMAL(9, 6) NOT NULL,
     longitude DECIMAL(9, 6) NOT NULL,
+    country   VARCHAR(10) NOT NULL,
+    state     VARCHAR(255),
 
-    UNIQUE (latitude, longitude)
+    UNIQUE (state, country, name)
 );
 
 -- USER_LOCATIONS

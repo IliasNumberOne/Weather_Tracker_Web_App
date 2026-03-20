@@ -29,20 +29,25 @@ public class Location {
     @Column(nullable = false)
     private BigDecimal longitude;
 
+    @Column(nullable = false)
+    private String country;
+
+    private String state;
+
     @ManyToMany(mappedBy = "locations")
     private Set<User> users = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Location)) return false;
-        Location that = (Location) o;
-        return latitude.compareTo(that.latitude) == 0 &&
-                longitude.compareTo(that.longitude) == 0;
+        if (!(o instanceof Location that)) return false;
+        return name.equals(that.name) &&
+                country.equals(that.country) &&
+                Objects.equals(state, that.state);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(latitude, longitude);
+        return Objects.hash(name, country, state);
     }
 }

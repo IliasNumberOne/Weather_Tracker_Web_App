@@ -37,10 +37,16 @@ public class LocationService {
         Map<String, Boolean> map = new HashMap<>();
 
         for (LocationDto locDto : locations) {
+            String stateSafe = locDto.state() != null ? locDto.state() : "";
             boolean exists = userLocations.stream()
-                    .anyMatch(l -> l.getLatitude().setScale(2, RoundingMode.HALF_UP).equals(locDto.lat().setScale(2, RoundingMode.HALF_UP))
-                            && l.getLongitude().setScale(2, RoundingMode.HALF_UP).equals(locDto.lon().setScale(2, RoundingMode.HALF_UP)));
-            map.put(locDto.name() + "-" + locDto.country(), exists); // key: name+country
+                    .anyMatch(l ->
+                            l.getName().equals(locDto.name()) &&
+                                    l.getCountry().equals(locDto.country()) &&
+                                    (l.getState() != null ? l.getState() : "").equals(stateSafe)
+                    );
+
+            String key = locDto.name() + "-" + locDto.country() + "-" + stateSafe;
+            map.put(key, exists);
         }
 
         return map;
@@ -48,11 +54,11 @@ public class LocationService {
 
 
     @Transactional
-    public void addLocation(Long userId, String name, BigDecimal lat, BigDecimal lon) {
+    public void addLocation(Long userId, String name, BigDecimal lat, BigDecimal lon, String country, String state) {
         User user = userRepository.findByIdWithLocations(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (locationRepository.existsByUserAndCoordinatesOrName(userId, lat, lon, name)) {
+        if (locationRepository.existsByUserAndLocation(userId, name, country, state)) {
             throw new LocationAlreadyAddedException("The location " + name + " has already been added");
         }
 
@@ -60,7 +66,8 @@ public class LocationService {
         location.setName(name);
         location.setLongitude(lon);
         location.setLatitude(lat);
-
+        location.setCountry(country);
+        location.setState(state);
 
 
         locationRepository.save(location);

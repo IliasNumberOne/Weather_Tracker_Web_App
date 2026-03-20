@@ -29,22 +29,20 @@ public class LocationRepository {
         return Optional.ofNullable(sessionFactory.getCurrentSession().get(Location.class, id));
     }
 
-    public boolean existsByUserAndCoordinatesOrName(Long userId, BigDecimal lat, BigDecimal lon, String name) {
-        BigDecimal normalizedLat = lat.setScale(2, RoundingMode.HALF_UP);
-        BigDecimal normalizedLon = lon.setScale(2, RoundingMode.HALF_UP);
-
+    public boolean existsByUserAndLocation(Long userId, String name, String country, String state) {
         List<Location> locations = sessionFactory.getCurrentSession()
                 .createQuery(
                         "select l from Location l join l.users u " +
-                                "where u.id = :userId and (l.latitude between :latMin and :latMax and l.longitude between :lonMin and :lonMax or l.name = :name)",
+                                "where u.id = :userId " +
+                                "and l.name = :name " +
+                                "and l.country = :country " +
+                                "and (l.state = :state or (l.state is null and :state is null))",
                         Location.class
                 )
                 .setParameter("userId", userId)
-                .setParameter("latMin", normalizedLat.subtract(BigDecimal.valueOf(0.01)))
-                .setParameter("latMax", normalizedLat.add(BigDecimal.valueOf(0.01)))
-                .setParameter("lonMin", normalizedLon.subtract(BigDecimal.valueOf(0.01)))
-                .setParameter("lonMax", normalizedLon.add(BigDecimal.valueOf(0.01)))
                 .setParameter("name", name)
+                .setParameter("country", country)
+                .setParameter("state", state)
                 .list();
 
         return !locations.isEmpty();

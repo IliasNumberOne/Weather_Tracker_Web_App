@@ -71,15 +71,17 @@
 
                             <div class="mt-auto" th:if="${user}">
                                 <form th:action="@{/location}" method="post"
-                                      th:if="${!locationSaved[loc.name() + '-' + loc.country()]}">
+                                      th:if="${!locationSaved[loc.name() + '-' + loc.country() + '-' + (loc.state != null ? loc.state : '')]}">
                                     <input type="hidden" name="name" th:value="${loc.name}">
                                     <input type="hidden" name="lat" th:value="${loc.lat}">
                                     <input type="hidden" name="lon" th:value="${loc.lon}">
+                                    <input type="hidden" name="country" th:value="${loc.country}">
+                                    <input type="hidden" name="state" th:value="${loc.state}">
                                     <button class="btn btn-primary w-100" type="submit">Add</button>
                                 </form>
 
                                 <span class="badge bg-success w-100 text-center"
-                                      th:if="${locationSaved[loc.name() + '-' + loc.country()]}">
+                                      th:if="${locationSaved[loc.name() + '-' + loc.country() + '-' + (loc.state != null ? loc.state : '')]}">
                                     Saved
                                 </span>
                             </div>
