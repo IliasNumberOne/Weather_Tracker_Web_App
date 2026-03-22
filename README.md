@@ -27,8 +27,8 @@ Weather Tracker is a Spring MVC web application (without Spring Boot) that enabl
 ## Features
 - **User Registration & Authentication:** Users can register new accounts and log in. Passwords are securely hashed with BCrypt.
 - **Session Management:** Custom session-based authentication (no Spring Security) using HTTP cookies and server-side sessions.
-- **Location Search:** Look up locations worldwide by name (with optional country/state qualifiers).
-- **Saved Locations:** Add and remove locations to a personal collection. Duplicate (state, country, name) entries are prevented by the database schema.
+- **Location Search:** Look up locations worldwide by name
+- **Saved Locations:** Add and remove locations to a personal collection.
 - **Real-Time Weather:** View current weather data for all saved locations via the OpenWeatherMap API.
 - **Responsive UI:** Clean, mobile-friendly interface built with Bootstrap 5 and Thymeleaf.
 
