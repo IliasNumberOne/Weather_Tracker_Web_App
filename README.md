@@ -1,9 +1,5 @@
 # Weather Tracker Web App
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](#)
-[![Docker](https://img.shields.io/badge/docker-ready-blue)](#)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](#)
-
 Weather Tracker is a Spring MVC web application (without Spring Boot) that enables users to register, search for global locations, and maintain a personal collection of places with current weather data. The app uses custom session-based authentication, integrates with the OpenWeatherMap API, and provides a responsive Bootstrap user interface.
 
 ## Table of Contents
@@ -106,7 +102,6 @@ The application uses a PostgreSQL database with the following tables:
 - **Authentication:** Custom session-based auth with HTTP cookies. Sessions expire per the `expires_at` field in the database (no Spring Security).
 - **Password Hashing:** User passwords are hashed using BCrypt.
 - **SQL Injection:** Using Hibernate (JPA) prevents SQL injection vulnerabilities.
-- **XSS Protection:** Thymeleaf templates auto-escape output to guard against cross-site scripting.
 
 ## API Integration
 - **OpenWeatherMap API:** Used for fetching current weather data for locations. A valid OpenWeatherMap API key must be configured.
