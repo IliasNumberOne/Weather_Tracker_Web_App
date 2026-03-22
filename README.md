@@ -52,51 +52,41 @@ Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway han
 
 ## Database Schema
 
-The application uses a PostgreSQL database with the following tables:
+### Table: Users
+- `id` – Primary key (auto-increment)
+- `login` – Unique user login/email
+- `password` – BCrypt hashed password
 
-    -- USERS
-    CREATE TABLE users
-    (
-        id       BIGSERIAL PRIMARY KEY,
-        login    VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL
-    );
+---
 
-    -- LOCATIONS
-    CREATE TABLE locations
-    (
-        id        BIGSERIAL PRIMARY KEY,
-        name      VARCHAR(255)  NOT NULL,
-        latitude  DECIMAL(9, 6) NOT NULL,
-        longitude DECIMAL(9, 6) NOT NULL,
-        country   VARCHAR(10) NOT NULL,
-        state     VARCHAR(255),
+### Table: Locations
+- `id` – Primary key (auto-increment)
+- `name` – Location (city) name
+- `latitude` – Geographic latitude
+- `longitude` – Geographic longitude
+- `country` – Country code
+- `state` – State/region (optional)
 
-        UNIQUE (state, country, name)
-    );
+**Constraint:**
+- Unique combination of `(state, country, name)` to prevent duplicate locations
 
-    -- USER_LOCATIONS
-    CREATE TABLE user_locations
-    (
-        user_id BIGINT NOT NULL,
-        location_id BIGINT NOT NULL,
-        PRIMARY KEY (user_id, location_id),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE
-    );
+---
 
-    -- SESSIONS
-    CREATE TABLE sessions
-    (
-        id         UUID PRIMARY KEY,
-        user_id    BIGINT       NOT NULL,
-        expires_at TIMESTAMP NOT NULL,
+### Table: User_Locations
+- `user_id` – Foreign key → `users.id`
+- `location_id` – Foreign key → `locations.id`
 
-        CONSTRAINT fk_sessions_user
-            FOREIGN KEY (user_id)
-                REFERENCES users (id)
-                ON DELETE CASCADE
-    );
+**Details:**
+- Composite primary key `(user_id, location_id)`
+- Many-to-many relationship between users and locations
+- Cascade delete enabled
+
+---
+
+### Table: Sessions
+- `id` – UUID primary key
+- `user_id` – Foreign key → `users.id`
+- `expires_at` – Session expiration timestamp
 
 ## Security
 - **Authentication:** Custom session-based auth with HTTP cookies. Sessions expire per the `expires_at` field in the database (no Spring Security).
