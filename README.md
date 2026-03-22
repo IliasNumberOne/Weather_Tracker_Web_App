@@ -97,51 +97,13 @@ Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway han
 - **OpenWeatherMap API:** Used for fetching current weather data for locations. A valid OpenWeatherMap API key must be configured.
 - **HTTP Client:** Java's built-in HTTP client (e.g., `HttpClient`) is used to communicate with the API.
 
-## Deployment (Docker)
-This project includes Docker support for easy deployment:
+## 🐳 Run with Docker
 
-- **PostgreSQL:** The database runs in a Docker container (official `postgres` image).
-- **Application:** The Spring MVC app runs in a Docker container (built via Dockerfile).
+Start the application using Docker:
 
-Example `docker-compose.yml` (service definitions):
-
-    version: '3.8'
-    services:
-      db:
-        image: postgres:13
-        environment:
-          - POSTGRES_DB=${POSTGRES_DB}
-          - POSTGRES_USER=${POSTGRES_USER}
-          - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        volumes:
-          - db-data:/var/lib/postgresql/data
-
-      app:
-        build: .
-        environment:
-          - DB_HOST=db
-          - DB_PORT=5432
-          - DB_NAME=${POSTGRES_DB}
-          - DB_USER=${POSTGRES_USER}
-          - DB_PASSWORD=${POSTGRES_PASSWORD}
-          - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
-        ports:
-          - "${APP_PORT}:8080"
-        depends_on:
-          - db
-
-    volumes:
-      db-data:
-
-You can configure environment variables in a `.env` file. Example `.env`:
-
-    POSTGRES_DB=weathertracker
-    POSTGRES_USER=weatheruser
-    POSTGRES_PASSWORD=weatherpass
-    APP_PORT=8080
-    OPENWEATHER_API_KEY=your_api_key_here
-
-To build and start containers, run: `docker-compose up --build`
+``bash
+docker-compose up --build
+To build and start containers, run: `docker-compose up --build
 
 After startup, the application will be available at [http://localhost:8080](http://localhost:8080).
 
@@ -181,32 +143,7 @@ After startup, the application will be available at [http://localhost:8080](http
 The project includes unit and integration tests using JUnit 5:
 - **Configuration Tests:** Verify that `Config` and `HibernateConfig` load correctly.
 - **Service Tests:** `AuthService`, `SessionService`, and `WeatherService` have tests (external API calls are mocked).
-- **Run Tests:**  
-  `mvn test`
 
-## Application Pages
-- **Home Page:** Displays the user's saved locations and current weather data.
-- **Search Results:** Shows matching locations for a search query, with an option to add them to the collection.
-- **Login / Register:** Forms for user authentication (`/login`, `/register`).
-- **Error Pages:** Friendly error messages for 404, 500, etc.
-
-## Screenshots
-*(Replace with actual screenshots. Save images in a `screenshots/` folder and update paths.)*
-
-![Home Page](screenshots/home.png)  
-![Search Page](screenshots/search.png)
-
-## Troubleshooting
-- **Database Connection:** If the app cannot connect to PostgreSQL, verify that the database is running and the connection settings (URL, username, password) are correct.
-- **Port Conflicts:** The app listens on port 8080 by default. Change `APP_PORT` or adjust your server if needed.
-- **API Key Issues:** If weather data isn't loading, ensure that the `OPENWEATHER_API_KEY` is set properly and has not exceeded rate limits.
-- **Session Expiration:** Sessions expire based on the `expires_at` timestamp. If users are logged out unexpectedly, check the system time and session timeout configuration.
-
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure that new features or fixes include corresponding tests. Feel free to file issues for bugs or enhancements.
-
-## License
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Contact
 Project repository: [IliasNumberOne/Weather_Tracker_Web_App](https://github.com/IliasNumberOne/Weather_Tracker_Web_App)
