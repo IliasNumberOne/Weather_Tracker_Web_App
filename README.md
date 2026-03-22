@@ -3,7 +3,7 @@
 
 Weather Tracker is a Spring MVC web application (without Spring Boot) that enables users to register, search for global locations, and maintain a personal collection of places with current weather data. The app uses custom session-based authentication, integrates with the OpenWeatherMap API, and provides a responsive Bootstrap user interface.
 
-## Table of Contents
+## 📄 Table of Contents
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
@@ -35,7 +35,7 @@ Weather Tracker is a Spring MVC web application (without Spring Boot) that enabl
 - **Java HTTP Client** – for calling the OpenWeatherMap API
 - **JUnit 5** – testing framework
 
-## Architecture
+## 📐 Architecture
 The application follows a traditional Model-View-Controller (MVC) design:
 
 - **Controllers:** Handle HTTP requests (e.g., `AuthController`, `LocationController`).
@@ -83,7 +83,7 @@ Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway han
 - `user_id` – Foreign key → `users.id`
 - `expires_at` – Session expiration timestamp
 
-## Security
+## 🔐 Security
 - **Authentication:** Custom session-based auth with HTTP cookies. Sessions expire per the `expires_at` field in the database (no Spring Security).
 - **Password Hashing:** User passwords are hashed using BCrypt.
 - **SQL Injection:** Using Hibernate (JPA) prevents SQL injection vulnerabilities.
