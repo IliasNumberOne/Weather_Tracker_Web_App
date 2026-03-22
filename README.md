@@ -9,16 +9,10 @@ Weather Tracker is a Spring MVC web application (without Spring Boot) that enabl
 - [Database Schema](#database-schema)
 - [Security](#security)
 - [API Integration](#api-integration)
-- [Deployment (Docker)](#deployment-docker)
+- [🐳 Run with Docker](#deployment-docker)
 - [Local Setup](#local-setup)
 - [Running the App](#running-the-app)
 - [Testing](#testing)
-- [Application Pages](#application-pages)
-- [Screenshots](#screenshots)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ## Features
 - **User Registration & Authentication:** Users can register new accounts and log in. Passwords are securely hashed with BCrypt.
@@ -101,11 +95,10 @@ Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway han
 
 Start the application using Docker:
 
-``bash
-docker-compose up --build
 To build and start containers, run: `docker-compose up --build
 
 After startup, the application will be available at [http://localhost:8080](http://localhost:8080).
+
 
 ## Local Setup
 
@@ -120,32 +113,21 @@ After startup, the application will be available at [http://localhost:8080](http
    `git clone https://github.com/IliasNumberOne/Weather_Tracker_Web_App.git`  
    `cd Weather_Tracker_Web_App`
 2. **Configure the application:**  
-   Edit `src/main/resources/application.properties` or set environment variables for the database connection and API key. For example:  
-   - `spring.datasource.url` (or use `DB_HOST`, `DB_PORT`, etc.)  
-   - `spring.datasource.username` and `spring.datasource.password`  
-   - `openweathermap.apikey` (or `OPENWEATHER_API_KEY`)
+   Edit `src/main/resources/application.properties` or set environment variables for the database connection and API key.
 3. **Run Flyway migrations:**  
    `mvn flyway:migrate`  
    This initializes the database schema.
 4. **Build the project:**  
    `mvn clean package`
 5. **Deploy the application:**  
-   - Deploy the generated WAR file to a Tomcat server, **or**  
-   - Run with Maven/Tomcat plugin (e.g., `mvn tomcat7:run`), if configured.  
+   - Deploy the generated WAR file to a Tomcat server
    The app defaults to port 8080.
 
 ## Running the App
 - **Build:** `mvn clean package`  
-- **Run:** Start the server/Tomcat. Access the app at `http://localhost:8080`.  
-- **With Docker:** If using Docker Compose, run `docker-compose up --build` (see above). Then visit `http://localhost:8080`.
+- **Run:** Start the server/Tomcat. Access the app at `http://localhost:8080`.
 
 ## Testing
 The project includes unit and integration tests using JUnit 5:
 - **Configuration Tests:** Verify that `Config` and `HibernateConfig` load correctly.
 - **Service Tests:** `AuthService`, `SessionService`, and `WeatherService` have tests (external API calls are mocked).
-
-
-## Contact
-Project repository: [IliasNumberOne/Weather_Tracker_Web_App](https://github.com/IliasNumberOne/Weather_Tracker_Web_App)
-
-For questions or feedback, open an issue on GitHub or contact the maintainer.
