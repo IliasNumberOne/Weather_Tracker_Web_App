@@ -1,6 +1,6 @@
 <h1 style="display: flex; align-items: flex-end;">
   Weather Tracker Web App
-  <img src="src/main/webapp/images/weather-app.png" alt="icon" width="70" height="70" style="margin-left: 10px;">
+  <img src="src/main/webapp/images/weather-app.png" alt="icon" width="70" height="70" style="margin-left: 10px; margin-bottom: -20px">
 </h1>
 
 Weather Tracker is a Spring MVC web application (without Spring Boot) that enables users to register, search for global locations, and maintain a personal collection of places with current weather data. The app uses custom session-based authentication, integrates with the OpenWeatherMap API, and provides a responsive Bootstrap user interface.
