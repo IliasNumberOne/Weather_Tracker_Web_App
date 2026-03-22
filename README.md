@@ -1,6 +1,5 @@
 <h1>
   Weather Tracker Web App
-  <br>
   <img src="src/main/webapp/images/weather-app.png" alt="icon" width="70" height="70" style="margin-top: -10px;">
 </h1>
 
