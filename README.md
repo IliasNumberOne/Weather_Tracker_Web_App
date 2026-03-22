@@ -9,7 +9,7 @@ Weather Tracker is a Spring MVC web application (without Spring Boot) that enabl
 - [Database Schema](#database-schema)
 - [Security](#security)
 - [API Integration](#api-integration)
-- [🐳 Run with Docker](#deployment-docker)
+- [🐳 Run with Docker](#run-with-docker)
 - [Local Setup](#local-setup)
 - [Running the App](#running-the-app)
 - [Testing](#testing)
