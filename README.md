@@ -95,9 +95,9 @@ Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway han
 
 Start the application using Docker:
 
-To build and start containers, run: `docker-compose up --build
+To build and start containers, run: `docker-compose up --build`
 
-After startup, the application will be available at [http://localhost:8080](http://localhost:8080).
+After startup, the application will be available at http://localhost:8080
 
 
 ## Local Setup
