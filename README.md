@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/docker-ready-blue)](#)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](#)
 
-**Executive Summary:** Weather Tracker is a Spring MVC web application (without Spring Boot) that enables users to register, search for global locations, and maintain a personal collection of places with current weather data. The app uses custom session-based authentication, integrates with the OpenWeatherMap API, and provides a responsive Bootstrap user interface.
+Weather Tracker is a Spring MVC web application (without Spring Boot) that enables users to register, search for global locations, and maintain a personal collection of places with current weather data. The app uses custom session-based authentication, integrates with the OpenWeatherMap API, and provides a responsive Bootstrap user interface.
 
 This README describes the project structure, setup instructions, and usage details.
 
