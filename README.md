@@ -45,7 +45,7 @@ The application follows a traditional Model-View-Controller (MVC) design:
 
 Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway handles database migrations on startup. The layered design (controllers → services → repositories) makes the app maintainable and testable.
 
-## Database Schema
+## 💾 Database Schema
 
 ### Table: Users
 - `id` – Primary key (auto-increment)
@@ -88,7 +88,7 @@ Configuration is done via Java classes (`Config`, `HibernateConfig`). Flyway han
 - **Password Hashing:** User passwords are hashed using BCrypt.
 - **SQL Injection:** Using Hibernate (JPA) prevents SQL injection vulnerabilities.
 
-## API Integration
+## 🔧 API Integration
 - **OpenWeatherMap API:** Used for fetching current weather data for locations. A valid OpenWeatherMap API key must be configured.
 - **HTTP Client:** Java's built-in HTTP client (e.g., `HttpClient`) is used to communicate with the API.
 
@@ -101,7 +101,7 @@ To build and start containers, run: `docker-compose up --build`
 After startup, the application will be available at http://localhost:8080
 
 
-## Local Setup
+## 🚀 Local Setup
 
 ### Prerequisites
 - Java 17+
@@ -124,11 +124,11 @@ After startup, the application will be available at http://localhost:8080
    - Deploy the generated WAR file to a Tomcat server
    The app defaults to port 8080.
 
-## Running the App
+## 🚀 Running the App
 - **Build:** `mvn clean package`  
 - **Run:** Start the server/Tomcat. Access the app at `http://localhost:8080`.
 
-## Testing
+## 🔧 Testing
 The project includes unit and integration tests using JUnit 5:
 - **Configuration Tests:** Verify that `Config` and `HibernateConfig` load correctly.
 - **Service Tests:** `AuthService`, `SessionService`, and `WeatherService` have tests (external API calls are mocked).
